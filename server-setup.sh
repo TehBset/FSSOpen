@@ -165,3 +165,14 @@ CRON_JOB="0 2 * * * /sbin/shutdown -r now"
 
 echo "Cron настроен:"
 crontab -l
+
+# ====== REBOOT (опционально) ======
+DO_REBOOT="${DO_REBOOT:-0}"
+
+if [[ "${DO_REBOOT}" == "1" ]]; then
+  echo "==> Перезагрузка через 5 секунд (DO_REBOOT=1)"
+  sleep 5
+  /usr/sbin/reboot
+else
+  echo "==> Перезагрузка не выполнена. Чтобы перезагрузить автоматически: DO_REBOOT=1"
+fi

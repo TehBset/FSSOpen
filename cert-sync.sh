@@ -52,3 +52,14 @@ echo "==> Готово: сертификаты обновлены в ${DST_DIR}"
 # for s in "${RESTART_SERVICES[@]}"; do
 #   systemctl restart "$s" || true
 # done
+
+# ====== REBOOT (опционально) ======
+DO_REBOOT="${DO_REBOOT:-0}"
+
+if [[ "${DO_REBOOT}" == "1" ]]; then
+  echo "==> Перезагрузка через 5 секунд (DO_REBOOT=1)"
+  sleep 5
+  /usr/sbin/reboot
+else
+  echo "==> Перезагрузка не выполнена. Чтобы перезагрузить автоматически: DO_REBOOT=1"
+fi
