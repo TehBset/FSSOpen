@@ -27,7 +27,7 @@ mkdir -p "${DST_DIR}"
 echo "==> Копируем сертификаты ${SRC_USER}@${SRC_HOST}:${SRC_DIR}/ -> ${DST_DIR}/"
 
 export SSHPASS="${SRC_PASS}"
-sshpass -e rsync -av --delete \
+sshpass -e rsync -avL --delete \
   -e "ssh -p ${SRC_PORT} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
   "${SRC_USER}@${SRC_HOST}:${SRC_DIR}/" \
   "${DST_DIR}/"
