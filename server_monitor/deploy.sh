@@ -20,12 +20,12 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "[1/6] Checking and installing system dependencies..."
-# Check if python3-venv is installed
-if ! python3 -m venv --help &>/dev/null; then
-    echo "  Installing python3-venv..."
-    apt-get update
-    apt-get install -y python3-venv python3-dev
-fi
+
+echo "  Updating package lists..."
+apt-get update
+
+echo "  Installing python3-venv..."
+apt-get install -y python3-venv python3-dev
 
 # Check if vnstat is installed
 if ! command -v vnstat &> /dev/null; then
@@ -58,7 +58,14 @@ if [ ! -f "server_monitor.service" ]; then
 fi
 
 echo "[5/6] Installing systemd service..."
-cp server_monitor.service /etc/systemd/system/server_monitor.service
+# Create a temporary service file with the correct paths
+TEMP_SERVICE=$(mktemp)
+sed "s|WorkingDirectory=.*|WorkingDirectory=$SCRIPT_DIR|g" server_monitor.service | \
+    sed "s|ExecStart=.*uvicorn|ExecStart=$SCRIPT_DIR/venv/bin/uvicorn|g" > "$TEMP_SERVICE"
+
+cp "$TEMP_SERVICE" /etc/systemd/system/server_monitor.service
+rm "$TEMP_SERVICE"
+
 systemctl daemon-reload
 systemctl enable server_monitor.service
 
