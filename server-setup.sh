@@ -68,7 +68,7 @@ apt update
 DEBIAN_FRONTEND=noninteractive apt upgrade -y
 
 echo "==> Установка пакетов"
-apt install -y sudo ufw zsh software-properties-common neovim curl wget net-tools snapd rsync sshpass vnstat
+apt install -y sudo ufw zsh software-properties-common neovim curl wget net-tools snapd rsync sshpass vnstat htop git
 
 echo "==> Создание пользователя ${NEW_USER} (если нет)"
 if id "${NEW_USER}" >/dev/null 2>&1; then
